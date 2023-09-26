@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Ultimate Todo List App Tutorial</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="task.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="container flex">
+        <div class="header-left">
+          <button class="btn nav-expand-btn" id="nav-expand-btn">
+            <i class="fa fas fa-bars"></i>
+          </button>
+        </div>
+        <div class="header-mid">
+          <h1>TO-DO-LIST</h1>
+          <span data-current-date>24 sept, 2024</span>
+        </div>
+        <div class="header-right">
+          <button class="btn">
+            <i class="fa fas fa-bell"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="sidebar-container" id="sidebar">
+      <div class="sidebar">
+        <h3>SideBar</h3>
+      </div>
+    </div>
+    <main>
+      <section>
+        <div class="container">
+          <div class="todo-action">
+            <div class="todo-search">
+              <input
+                type="search"
+                placeholder="Search task.."
+                data-search-task
+              />
+              <i class="fa fas fa-search"></i>
+            </div>
+            <div class="create-todo-section">
+              <button class="btn btn-primary" data-open-modal="add-task">
+                <i class="fa fas fa-plus"></i> New task
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="container">
+          <div class="task-filter flex">
+            <div class="view-filter">
+              <button class="btn" data-view="list">
+                <i class="fa-solid fa-list"></i>
+              </button>
+              <button class="btn active" data-view="grid">
+                <i class="fa-solid fa-table-cells"></i>
+              </button>
+            </div>
+            <div class="sorting">
+              <select data-sort-by class="btn">
+                <option>Sort By</option>
+                <option>Order Added</option>
+                <option value="newest first">Early First</option>
+                <option value="oldest first">Older First</option>
+                <option value="completed first">Completed First</option>
+                <option value="uncompleted first">Uncompleted First</option>
+              </select>
+            </div>
+          </div>
+          <div
+            class="task-container flex"
+            data-task-container
+            data-view-type="grid"
+          ></div>
+        </div>
+      </section>
+    </main>
+
+    <template data-task-template>
+      <div class="task flex">
+        <div class="task-content">
+          <h1 class="task-title"></h1>
+          <p class="task-desc"></p>
+          <div class="task-timeline flex">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span class="timeline-date"></span>
+          </div>
+        </div>
+        <hr />
+        <div class="task-action flex">
+          <button class="btn task-status"></button>
+          <div class="flex">
+            <button class="btn deleteTask">
+              <i class="fa fas fa-trash"></i>
+            </button>
+            <button class="btn editTaskBtn">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <div class="modal-container" data-madal="add-task">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Add a task</h3>
+          <button class="btn" data-close-modal="add-task">
+            <i class="fa fas fa-times"></i>
+          </button>
+        </div>
+        <form data-action-type="add">
+          <div class="form-control">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              id="title"
+              required
+              placeholder="e.g. study for the text"
+            />
+          </div>
+          <div class="form-control">
+            <label for="date">Date</label>
+            <input type="date" id="date" required />
+          </div>
+          <div class="form-control">
+            <label for="description">Description</label>
+            <textarea
+              placeholder="e.g. study for the text"
+              id="description"
+              required
+            ></textarea>
+          </div>
+          <div class="form-control checkbox">
+            <input type="checkbox" id="completed" />
+            <label for="completed">Mark as completed</label>
+          </div>
+          <div class="form-control">
+            <button class="btn btn-primary">
+              <i class="fa fa fa-plus"></i>Add New Task
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-container" data-madal="edit-task">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Edit task</h3>
+          <button class="btn" data-close-modal="edit-task">
+            <i class="fa fas fa-times"></i>
+          </button>
+        </div>
+        <form data-action-type="edit">
+          <div class="form-control">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              id="title"
+              required
+              placeholder="e.g. study for the text"
+            />
+          </div>
+          <div class="form-control">
+            <label for="date">Date</label>
+            <input type="date" id="date" required />
+          </div>
+          <div class="form-control">
+            <label for="description">Description</label>
+            <textarea
+              placeholder="e.g. study for the text"
+              id="description"
+              required
+            ></textarea>
+          </div>
+          <input type="hidden" id="taskId" />
+          <div class="form-control checkbox">
+            <input type="checkbox" id="completed" />
+            <label for="completed">Mark as completed</label>
+          </div>
+          <div class="form-control">
+            <button class="btn btn-primary">
+              <i class="fa fa fa-edit"></i>Update task
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
